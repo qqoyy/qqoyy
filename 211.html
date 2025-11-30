@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN"> <!-- 页面语言：中文简体 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件工程职业指南</title>
+    <!-- 引入Font Awesome图标库（外部CDN）：提供各种图标支持 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式重置（精简版）：
+           清除所有元素默认的margin和padding，避免浏览器兼容性问题
+           box-sizing: border-box：让元素的padding和border不影响宽高计算 */
+        * {
+            margin: 0; /* 清除默认外边距 */
+            padding: 0; /* 清除默认内边距 */
+            box-sizing: border-box; /* 盒模型：border和padding包含在宽高中 */
+        }
+
+        /* 页面主体样式 */
+        body {
+            font-family: "Microsoft YaHei", sans-serif; /* 字体：微软雅黑（适配中文） */
+            line-height: 1.6; /* 行高：增强文字可读性 */
+            color: #333; /* 文字颜色：深灰色 */
+            background: #f5f5f5; /* 背景色：浅灰色 */
+            /* 过渡效果：背景色和文字色变化时平滑过渡，持续0.3秒 */
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* 暗黑模式样式（通过给body添加.dark类激活） */
+        body.dark {
+            background: #1a1a1a; /* 暗黑模式背景色：深黑色 */
+            color: #f5f5f5; /* 暗黑模式文字色：浅灰色 */
+        }
+
+        /* 容器样式（自适应布局） */
+        .container {
+            max-width: 100%; /* 最大宽度：占满屏幕 */
+            padding: 0 15px; /* 左右内边距：15px（避免内容贴边） */
+            margin: 0 auto; /* 水平居中：左右自动外边距 */
+        }
+
+        /* 头部区域样式 */
+        header {
+            background: linear-gradient(135deg, #4299e1, #38b2ac); /* 渐变背景：蓝绿色系 */
+            color: white; /* 头部文字色：白色 */
+            padding: 25px 0; /* 上下内边距25px，左右0 */
+            text-align: center; /* 文字居中对齐 */
+            border-radius: 0 0 20px 20px; /* 圆角：仅底部两个角（20px弧度） */
+            margin-bottom: 20px; /* 底部外边距：与下方内容间距20px */
+        }
+
+        /* 头部标题样式 */
+        header h1 {
+            font-size: 22px; /* 字体大小：22px（适配移动端） */
+            margin-bottom: 6px; /* 底部外边距：与副标题间距6px */
+        }
+
+        /* 头部副标题样式 */
+        header p {
+            font-size: 14px; /* 字体大小：14px */
+            opacity: 0.9; /* 透明度：90%（稍微淡化） */
+        }
+
+        /* 锚点导航样式 */
+        nav {
+            position: sticky; /* 粘性定位：滚动到顶部时固定 */
+            top: 0; /* 固定在顶部 */
+            background: white; /* 导航背景色：白色 */
+            padding: 10px 0; /* 上下内边距10px，左右0 */
+            margin-bottom: 15px; /* 底部外边距：与下方内容间距15px */
+            border-radius: 10px; /* 圆角：10px（所有角） */
+            z-index: 10; /* 层级：10（确保在其他元素上方） */
+        }
+
+        /* 暗黑模式下的导航背景 */
+        body.dark nav {
+            background: #2d2d2d; /* 暗黑模式导航背景：深灰色 */
+        }
+
+        /* 导航列表样式（横向滚动） */
+        .nav-list {
+            display: flex; /* 弹性布局：横向排列 */
+            overflow-x: auto; /* 横向溢出时显示滚动条 */
+            padding: 0 10px; /* 左右内边距：10px */
+            gap: 12px; /* 列表项之间间距：12px */
+        }
+
+        /* 导航列表项样式 */
+        .nav-list li {
+            list-style: none; /* 清除列表默认圆点 */
+            white-space: nowrap; /* 文字不换行（避免导航项折行） */
+        }
+
+        /* 导航链接样式 */
+        .nav-list a {
+            text-decoration: none; /* 清除链接默认下划线 */
+            color: #333; /* 链接颜色：深灰色 */
+            font-size: 13px; /* 字体大小：13px */
+            padding: 5px 10px; /* 内边距：上下5px，左右10px */
+            border-radius: 20px; /* 圆角：20px（按钮式外观） */
+            transition: all 0.3s; /* 过渡效果：所有样式变化平滑过渡0.3秒 */
+        }
+
+        /* 暗黑模式下的导航链接颜色 */
+        body.dark .nav-list a {
+            color: #f5f5f5; /* 暗黑模式链接颜色：浅灰色 */
+        }
+
+        /* 导航链接 hover 效果（鼠标悬浮时） */
+        .nav-list a:hover {
+            background: #4299e1; /* 背景色：蓝色 */
+            color: white; /* 文字色：白色 */
+        }
+
+        /* 章节内容样式（每个模块的容器） */
+        section {
+            background: white; /* 章节背景色：白色 */
+            border-radius: 15px; /* 圆角：15px */
+            padding: 18px; /* 内边距：18px（所有方向） */
+            margin-bottom: 15px; /* 底部外边距：15px（与其他章节间距） */
+            transition: transform 0.3s; /* 过渡效果：位移变化平滑过渡0.3秒 */
+        }
+
+        /* 暗黑模式下的章节背景 */
+        body.dark section {
+            background: #2d2d2d; /* 暗黑模式章节背景：深灰色 */
+        }
+
+        /* 章节 hover 效果（鼠标悬浮时） */
+        section:hover {
+            transform: translateY(-3px); /* 向上位移3px（上浮动画） */
+        }
+
+        /* 章节标题样式 */
+        section h2 {
+            color: #4299e1; /* 标题颜色：蓝色 */
+            font-size: 17px; /* 字体大小：17px */
+            margin-bottom: 12px; /* 底部外边距：12px（与内容间距） */
+            display: flex; /* 弹性布局：图标和文字横向排列 */
+            align-items: center; /* 垂直居中对齐 */
+            gap: 8px; /* 图标和文字间距：8px */
+        }
+
+        /* 章节内段落和列表项样式 */
+        section p, section li {
+            font-size: 14px; /* 字体大小：14px */
+            margin-bottom: 8px; /* 底部外边距：8px（与下一个元素间距） */
+        }
+
+        /* 职业岗位卡片容器（自适应网格） */
+        .job-cards {
+            display: grid; /* 网格布局 */
+            grid-template-columns: 1fr; /* 列数：1列（小屏幕） */
+            gap: 12px; /* 卡片之间间距：12px */
+            margin-bottom: 12px; /* 底部外边距：12px（与下方内容间距） */
+        }
+
+        /* 媒体查询：屏幕宽度≥414px时（适配大屏手机） */
+        @media (min-width: 414px) {
+            .job-cards {
+                grid-template-columns: repeat(2, 1fr); /* 列数：2列 */
+            }
+        }
+
+        /* 单个岗位卡片样式 */
+        .job-card {
+            background: #f0f8fb; /* 卡片背景色：浅蓝色 */
+            border-radius: 10px; /* 圆角：10px */
+            padding: 12px; /* 内边距：12px */
+            transition: background 0.3s; /* 过渡效果：背景色变化平滑过渡0.3秒 */
+        }
+
+        /* 暗黑模式下的岗位卡片背景 */
+        body.dark .job-card {
+            background: #383838; /* 暗黑模式卡片背景：中灰色 */
+        }
+
+        /* 岗位卡片标题样式 */
+        .job-card h3 {
+            color: #38b2ac; /* 标题颜色：青绿色 */
+            font-size: 15px; /* 字体大小：15px */
+            margin-bottom: 6px; /* 底部外边距：6px（与描述间距） */
+        }
+
+        /* 列表通用样式（ul和ol） */
+        ul, ol {
+            padding-left: 20px; /* 左内边距：20px（给列表项编号/圆点留空间） */
+            margin-bottom: 12px; /* 底部外边距：12px（与下一个元素间距） */
+        }
+
+        /* 资源链接样式（新增） */
+        .resource-list a {
+            color: #4299e1; /* 链接颜色：蓝色 */
+            text-decoration: none; /* 清除默认下划线 */
+        }
+
+        .resource-list a:hover {
+            text-decoration: underline; /* 鼠标悬浮时显示下划线 */
+        }
+
+        body.dark .resource-list a {
+            color: #67b7ff; /* 暗黑模式下链接颜色：浅蓝 */
+        }
+
+        /* 功能按钮通用样式（暗黑模式切换+返回顶部） */
+        .dark-mode-btn, .back-to-top {
+            position: fixed; /* 固定定位：不随滚动移动 */
+            width: 38px; /* 宽度：38px */
+            height: 38px; /* 高度：38px（正方形） */
+            border-radius: 50%; /* 圆角：50%（圆形按钮） */
+            border: none; /* 清除默认边框 */
+            color: white; /* 图标颜色：白色 */
+            font-size: 16px; /* 图标大小：16px */
+            display: flex; /* 弹性布局：图标居中 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            cursor: pointer; /* 鼠标样式：手型（表示可点击） */
+            transition: transform 0.3s; /* 过渡效果：缩放变化平滑过渡0.3秒 */
+            z-index: 10; /* 层级：10（确保在其他元素上方） */
+        }
+
+        /* 暗黑模式切换按钮位置 */
+        .dark-mode-btn {
+            bottom: 70px; /* 距离底部：70px */
+            right: 15px; /* 距离右侧：15px */
+            background: #4299e1; /* 背景色：蓝色 */
+        }
+
+        /* 返回顶部按钮位置和默认状态 */
+        .back-to-top {
+            bottom: 15px; /* 距离底部：15px */
+            right: 15px; /* 距离右侧：15px */
+            background: #38b2ac; /* 背景色：青绿色 */
+            opacity: 0; /* 透明度：0（默认隐藏） */
+            visibility: hidden; /* 可见性：隐藏（避免占空间） */
+            transition: all 0.3s; /* 过渡效果：所有样式变化平滑过渡0.3秒 */
+        }
+
+        /* 返回顶部按钮显示状态（添加.show类） */
+        .back-to-top.show {
+            opacity: 1; /* 透明度：1（显示） */
+            visibility: visible; /* 可见性：显示 */
+        }
+
+        /* 功能按钮 hover 效果（鼠标悬浮时） */
+        .dark-mode-btn:hover, .back-to-top:hover {
+            transform: scale(1.1); /* 缩放：放大1.1倍（放大动画） */
+        }
+
+        /* 版权信息样式 */
+        footer {
+            text-align: center; /* 文字居中对齐 */
+            padding: 15px 0; /* 上下内边距15px，左右0 */
+            font-size: 12px; /* 字体大小：12px */
+            color: #666; /* 文字颜色：灰色 */
+            margin-top: 10px; /* 顶部外边距：10px（与上方内容间距） */
+        }
+
+        /* 暗黑模式下的版权文字颜色 */
+        body.dark footer {
+            color: #aaa; /* 暗黑模式版权颜色：浅灰色 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域：显示页面标题和副标题 -->
+    <header>
+        <div class="container"> <!-- 容器：控制内容宽度和边距 -->
+            <h1>软件工程专业职业指南</h1> <!-- 主标题 -->
+            <p>初学者职业方向与技能规划</p> <!-- 副标题 -->
+        </div>
+    </header>
+
+    <!-- 锚点导航区域：快速跳转到对应章节 -->
+    <nav>
+        <div class="container"> <!-- 容器：控制导航宽度 -->
+            <ul class="nav-list"> <!-- 导航列表 -->
+                <li><a href="#intro">专业介绍</a></li> <!-- 锚点链接：跳转到专业介绍章节 -->
+                <li><a href="#jobs">职业岗位</a></li> <!-- 锚点链接：跳转到职业岗位章节 -->
+                <li><a href="#skills">技能要求</a></li> <!-- 锚点链接：跳转到技能要求章节 -->
+                <li><a href="#path">学习路径</a></li> <!-- 锚点链接：跳转到学习路径章节 -->
+                <li><a href="#resources">推荐资源</a></li> <!-- 锚点链接：跳转到推荐资源章节 -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域：包含所有核心章节 -->
+    <main class="container">
+        <!-- 专业介绍章节：id="intro" 对应锚点链接 -->
+        <section id="intro">
+            <h2><i class="fas fa-book"></i>专业介绍</h2> <!-- 章节标题+图书图标 -->
+            <p>软件工程是用工程化方法构建和维护高质量软件的学科，涵盖程序设计、数据库、开发工具、系统平台等，培养能从事软件设计、开发、测试、管理的应用型人才。该专业属于工学门类，专业代码 080902，修业年限通常为四年，毕业后授予工学学士学位。它并非单纯侧重编程，而是研究大规模软件开发的方法、工具和管理，核心是用系统化、规范化的工程原则，覆盖软件从需求分析、设计、开发到测试、维护的全生命周期，搭建起理论概念与软件实际应用的桥梁。</p> <!-- 专业介绍内容 -->
+        </section>
+
+        <!-- 职业岗位章节：id="jobs" 对应锚点链接 -->
+        <section id="jobs">
+            <h2><i class="fas fa-briefcase"></i>职业岗位</h2> <!-- 章节标题+公文包图标 -->
+            <div class="job-cards"> <!-- 岗位卡片容器 -->
+                <!-- 后端开发工程师卡片 -->
+                <div class="job-card">
+                    <h3>后端开发工程师</h3> <!-- 岗位名称 -->
+                    <p>负责服务器端开发、架构搭建、业务逻辑处理</p> <!-- 岗位描述 -->
+                </div>
+                <!-- 前端开发工程师卡片 -->
+                <div class="job-card">
+                    <h3>前端开发工程师</h3> <!-- 岗位名称 -->
+                    <p>负责用户界面开发、交互效果实现</p> <!-- 岗位描述 -->
+                </div>
+                <!-- 移动开发工程师卡片 -->
+                <div class="job-card">
+                    <h3>移动开发工程师</h3> <!-- 岗位名称 -->
+                    <p>iOS/Android 应用开发，熟悉原生或跨平台框架</p> <!-- 岗位描述 -->
+                </div>
+                <!-- 软件测试工程师卡片 -->
+                <div class="job-card">
+                    <h3>软件测试工程师</h3> <!-- 岗位名称 -->
+                    <p>设计测试用例、发现软件缺陷、保障产品质量</p> <!-- 岗位描述 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能要求章节：id="skills" 对应锚点链接 -->
+        <section id="skills">
+            <h2><i class="fas fa-tools"></i>技能要求</h2> <!-- 章节标题+工具图标 -->
+            <!-- 核心技能小标题（行内样式：简化代码） -->
+            <h3 style="font-size: 15px; color: #38b2ac; margin: 10px 0 6px;">核心技能</h3>
+            <ul> <!-- 无序列表：核心技能列表 -->
+                <li>编程语言：Java/Python/JavaScript 等至少一门</li> <!-- 技能项1 -->
+                <li>基础理论：数据结构、算法、计算机网络</li> <!-- 技能项2 -->
+                <li>开发工具：Git、VS Code/IDEA</li> <!-- 技能项3 -->
+                <li>框架技术：Spring/React/Vue 等</li> <!-- 技能项4 -->
+            </ul>
+            <!-- 职业素养小标题（行内样式：简化代码） -->
+            <h3 style="font-size: 15px; color: #38b2ac; margin: 10px 0 6px;">职业素养</h3>
+            <ul> <!-- 无序列表：职业素养列表 -->
+                <li>逻辑思维能力、持续学习能力</li> <!-- 素养项1 -->
+                <li>团队协作、责任心、抗压能力</li> <!-- 素养项2 -->
+            </ul>
+        </section>
+
+        <!-- 学习路径章节：id="path" 对应锚点链接 -->
+        <section id="path">
+            <h2><i class="fas fa-road"></i>学习路径</h2> <!-- 章节标题+道路图标 -->
+            <ol> <!-- 有序列表：学习阶段按顺序排列 -->
+                <li>基础阶段：计算机基础、编程语言入门</li> <!-- 阶段1 -->
+                <li>进阶阶段：数据库技术、Web 开发基础</li> <!-- 阶段2 -->
+                <li>框架阶段：主流框架学习、项目实战</li> <!-- 阶段3 -->
+                <li>专项阶段：选择细分方向深入（前端/后端等）</li> <!-- 阶段4 -->
+                <li>就业准备：积累项目经验、准备面试</li> <!-- 阶段5 -->
+            </ol>
+        </section>
+
+        <!-- 推荐资源章节：id="resources" 对应锚点链接（修改部分） -->
+        <section id="resources">
+            <h2><i class="fas fa-book-open"></i>推荐资源</h2> <!-- 章节标题+打开的书图标 -->
+            <ul class="resource-list"> <!-- 无序列表：推荐资源列表，添加resource-list类用于样式控制 -->
+                <li>书籍：《数据结构与算法分析》《Clean Code》</li> <!-- 资源项1：书籍 -->
+                <li>在线课程：慕课网、极客时间、<a href="https://leetcode.cn/" target="_blank">LeetCode（算法练习）</a></li> <!-- 资源项2：在线课程，增加LeetCode超链接 -->
+                <li>技术社区：GitHub、<a href="https://www.csdn.net/" target="_blank">CSDN</a>、Stack Overflow</li> <!-- 资源项3：技术社区，增加CSDN超链接 -->
+                <li>工具：VS Code、Git、Postman</li> <!-- 资源项4：开发工具 -->
+            </ul>
+        </section>
+    </main>
+
+    <!-- 版权信息区域 -->
+    <footer>
+        <p>© 2025 软件工程职业指南 | 袁晓彤</p> <!-- 版权文字：年份+网站名称 -->
+    </footer>
+
+    <!-- 暗黑模式切换按钮：id用于JS获取元素 -->
+    <button class="dark-mode-btn" id="darkModeBtn">
+        <i class="fas fa-moon"></i> <!-- 月亮图标（默认浅色模式） -->
+    </button>
+    <!-- 返回顶部按钮：id用于JS获取元素 -->
+    <button class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-arrow-up"></i> <!-- 向上箭头图标 -->
+    </button>
+
+    <script>
+        // 1. 暗黑模式切换功能
+        // 获取暗黑模式按钮元素
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        // 获取body元素（用于切换.dark类）
+        const body = document.body;
+        // 定义变量：标记是否为暗黑模式（默认false：浅色模式）
+        let isDark = false;
+
+        // 给暗黑模式按钮添加点击事件监听
+        darkModeBtn.addEventListener('click', () => {
+            isDark = !isDark; // 切换状态（true↔false）
+            body.classList.toggle('dark', isDark); // 给body添加/移除.dark类
+            // 切换按钮图标：暗黑模式显示太阳，浅色模式显示月亮
+            darkModeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // 2. 返回顶部功能
+        // 获取返回顶部按钮元素
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // 给窗口添加滚动事件监听
+        window.addEventListener('scroll', () => {
+            // 当滚动距离超过200px时，显示返回顶部按钮；否则隐藏
+            backToTopBtn.classList.toggle('show', window.scrollY > 200);
+        });
+
+        // 给返回顶部按钮添加点击事件监听
+        backToTopBtn.addEventListener('click', () => {
+            // 平滑滚动到页面顶部（behavior: 'smooth' 实现平滑效果）
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 3. 锚点导航平滑滚动功能
+        // 获取所有href以#开头的链接（锚点链接）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // 给每个锚点链接添加点击事件监听
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault(); // 阻止默认跳转行为（默认是瞬间跳转）
+                // 获取锚点目标元素（通过href属性值）
+                const target = document.querySelector(anchor.getAttribute('href'));
+                // 如果目标元素存在，平滑滚动到目标位置（偏移-60px：适配导航栏高度）
+                target && window.scrollTo({
+                    top: target.offsetTop - 60,
+                    behavior: 'smooth' // 平滑滚动
+                });
+            });
+        });
+    </script>
+</body>
+</html>
